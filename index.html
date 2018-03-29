@@ -8,10 +8,10 @@
 <!-- UIkit JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
-	<title>Optical Calculator</title>
+	<title>Permutation Calculator</title>
 </head>
 <body style="width:100vw;height:100vh;background-color: green;overflow: auto">
-	<h1 class="uk-heading-line uk-text-center" style="height: 100px"><span>UI-DBUS Calculator</span></h1>
+	<h1 class="uk-heading-line uk-text-center" style="height: 100px"><span>UI-DBUS Permutation Calculator</span></h1>
 	<div style="margin-top: 8vh;">
 		<div class="uk-margin" uk-margin>
 	        <label style="color: black;margin-right: 5px;">Number Of Channels:</label>
@@ -179,13 +179,9 @@ function checkFeasibility(differenceArr){
 	    			}
 	    			
 	    			isItCheckedAlready.push(false)
-	    			// console.log(temp)
+	    			
 	    		}
-	    		// $("#keys").append("</div>")
-	    		// keyString = keyString + "</div>"
-	    		// $("#keys").append(keyString);
-	    		// console.log(temp)
-	    		// console.log(arr.length)
+	    		
 	    		var neighbour = new CheckNeightbours();
 	    		for (var i = 0;i<arr.length;i++){
 	    			info = arr[i].getInfo()
@@ -200,19 +196,9 @@ function checkFeasibility(differenceArr){
 	    					isItCheckedAlready[toCheckTrue[j]] = true
 	    					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
 	    					if(result == true){
-	    						// var selectedKeysString = "<div>"
-	    						// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
-	    						// $("#selectedKeys").append("<br>");
-	    						// selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
-	    						// console.log("toCheck:"+toCheckTrue[j])
-	    						// console.log(arr[toCheckTrue[j]])
+	    					
 	    						var toShow = arr[toCheckTrue[j]].getInfo();
-	    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
-	    						// selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
-	    						// $("#selectedKeys").append("<br>");
-	    						// $("#selectedKeys").append("difference : "+difference);
-	    						// selectedKeysString = selectedKeysString + "difference : "+difference+"</div>";
-	    						// $("#selectedKeys").append(selectedKeysString);
+	    						
 	    					}
 	    				}
 
@@ -290,9 +276,9 @@ function printAnswer(answer){
 $("#submit-button").on("click",function(){
 	
 	var N = $("#NumberOfChannels").val();
-	if(N<10){
+	if(N>=8){
 		UIkit.notification({
-   			message: 'N should be greater than equal to 10',
+   			message: 'N should be less than equal to 7',
     		status: 'danger',
     		pos: 'top-right',
     		timeout: 3000
@@ -356,18 +342,14 @@ $("#channel-submit-button").on("click",function(){
 		  }
 		  return result;
 		}
-		var numberOfDigitsToPermute = 6;
-		var arrayForPermuation = inputArray.slice(0,numberOfDigitsToPermute)
-		permutedResults = permute(arrayForPermuation);
+		// var numberOfDigitsToPermute = 6;
+		// var arrayForPermuation = inputArray.slice(0,numberOfDigitsToPermute)
+		permutedResults = permute(inputArray);
 		var temp = printAnswer(permutedResults[0]);
 		var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
 		var finalResults= temp;
 		var finalArray=permutedResults[0];
 		for (var i =1;i<permutedResults.length;i++){
-			// $("#element").append("<br>")
-			// for(var j=0;j<permutedResults[0].length;j++){
-			// $("#element").append(permutedResults[i][j]+"\t")
-			// }
 			temp = printAnswer(permutedResults[i])
 			var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
 			if(tempSum < currentSum){
@@ -384,16 +366,7 @@ $("#channel-submit-button").on("click",function(){
 		$("#element").append("<br>");
 		$("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
 
-		// for(var i=numberOfDigitsToPermute;i<inputArray.length;i++){
-		// 	finalArray.push(inputArray[i])
-		// }
-		// $("#element").append("<br>")
-		// for(var j=0;j<finalArray.length;j++){
-		// 	$("#element").append(finalArray[j]+"\t")
-		// }
-		// var finalResults = printAnswer(finalArray)
-		// $("#element").append("<br>");
-		// $("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
+	
 		
 
 	}
