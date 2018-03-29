@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/css/uikit.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.35/js/uikit-icons.min.js"></script>
+	<title>Optical Calculator</title>
+</head>
+<body style="width:100vw;height:100vh;background-color: green;overflow: auto">
+	<h1 class="uk-heading-line uk-text-center" style="height: 100px"><span>UI-DBUS Calculator</span></h1>
+	<div style="margin-top: 8vh;">
+		<div class="uk-margin" uk-margin>
+	        <label style="color: black;margin-right: 5px;">Number Of Channels:</label>
+	        <div uk-form-custom="target: true">
+	            
+	            <input id ="NumberOfChannels" class="uk-input uk-form-width-small"  type="number" placeholder="0">
+	        </div>
+	        
+	        <button class="uk-button uk-button-secondary" id="submit-button">Add Input</button>
+	        <button class="uk-button uk-button-secondary" id="channel-submit-button" style="display: none">Submit</button>
+    	</div>
+	</div>
+			
+				<div id="inputElement" style="width:100vw;height:auto;display: grid;grid-template-columns: auto auto auto auto auto auto auto auto;grid-row-gap: 10px;justify-content: center;" >
+					
+				</div>
+
+				<br>
+
+				<div id="element" style="width:100vw;text-align: center;height:auto;">
+					
+				</div>
+			
+				<br>
+
+				<div id ="keys" style="width:100vw;display: grid;grid-template-columns: auto auto auto auto auto;grid-column-gap: 5vw;height:auto; color: #fff;justify-content: center;">
+
+				</div>
+				<br>
+				<div id="selectedKeys" style="width:100vw;text-align: center;height:auto;color: #fff;display: grid;grid-template-columns: auto auto auto auto auto;grid-row-gap: 15px;">
+				</div>
+			
+	
+	
+	<!-- <label class="channelLabel" style="display: none">0:</label><input id ="channel" class="uk-input uk-form-width-small"  type="number" placeholder="0"> -->
+</body>
+
+</html>
+
+<style type="text/css">
+	*{
+		background-color: green;
+	}
+	body{
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items:  center;
+	}
+	#element{
+		color: #fff;
+	}
+	.channelLabel{
+		color:#fff;
+		margin-right: 10px;
+	}
+</style>
+<script type="text/javascript">
+
+// Fasibility Function
+function factorial(number){
+	if(number<=1){
+		return 1;
+	}
+	return number * factorial(number - 1)
+}
+function getCombination(Number){
+	var numerator = factorial(Number)
+	var denominator = factorial(2)*factorial(Number - 2)
+	console.log(numerator/denominator)
+	return numerator/denominator; 
+}
+
+
+function checkFeasibility(differenceArr){
+	var map = {};
+	class Double {
+		constructor(diagonal,row){
+			this.diagonal = diagonal
+			this.row = row
+		}
+		getInfo(){
+			var a = []
+			a.push(this.diagonal)
+			a.push(this.row)
+			return a
+		}
+	}
+	class CheckNeightbours{
+		constructor(){
+			neighbour = {}
+		}
+		addNeightbour(a,b,diff){
+			var nigga = Math.max(a,b)+","+Math.min(a,b)
+			if(neighbour.hasOwnProperty(nigga)){
+				return false;
+			}else{
+				neighbour[nigga] = diff;
+				return true;
+			}
+		}	
+		returnNeighbour(){
+			return neighbour
+		}		
+	}
+	//map["number"] = [Double]
+
+	for(j=0;j<differenceArr.length;j++){
+		var tempDia = 1
+		for(k=0;k<differenceArr[0].length;k++){
+			if(differenceArr[j][k] == " "){
+
+			}else{
+				if (map.hasOwnProperty(differenceArr[j][k])) {
+					var a = new Double(tempDia,j+1)
+					array = map[differenceArr[j][k]]
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}else{
+					var a = new Double(tempDia,j+1)
+					var array = []
+					array.push(a)
+					map[differenceArr[j][k]] = array
+				}
+				tempDia++;
+			}
+			
+		}
+	}
+	// console.log("map:")
+	// console.log(map)
+
+	var Nb = 0
+	var Nc = 0
+	var lengthOfTheArray = 0
+	for (var key in map) {
+	    if (map.hasOwnProperty(key)) {
+	    	if(map[key].length > 1){
+	    		//need to include these in the calculation
+	    		// console.log(key + " -> " + map[key].length);
+	    		arr = map[key]
+	    		lengthOfTheArray = lengthOfTheArray + getCombination(arr.length)
+	    		var temp = {}
+	    		var isItCheckedAlready = []
+	    		// $("#keys").append("<div>")
+	    		// var keyString = "<div>"
+	    		for (var i =0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			console.log(key+"-->"+row+","+diagonal)
+	    			// $("#keys").append("<br>")
+	    			// keyString = keyString + "<br>"
+	    			// $("#keys").append(key+"-->"+row+","+diagonal)
+	    			// keyString = keyString + key+"-->"+row+","+diagonal;
+	    			
+	    			if (temp.hasOwnProperty(row)){
+	    				tempArr = temp[row]
+	    				tempArr.push(i)
+	    				temp[row] = tempArr
+	    			}else{
+	    				tempArr = [i]
+	    				temp[row] = tempArr
+	    			}
+	    			
+	    			isItCheckedAlready.push(false)
+	    			// console.log(temp)
+	    		}
+	    		// $("#keys").append("</div>")
+	    		// keyString = keyString + "</div>"
+	    		// $("#keys").append(keyString);
+	    		// console.log(temp)
+	    		// console.log(arr.length)
+	    		var neighbour = new CheckNeightbours();
+	    		for (var i = 0;i<arr.length;i++){
+	    			info = arr[i].getInfo()
+	    			diagonal = info[0]
+	    			row  = info[1]
+	    			difference = row - diagonal
+	    			sum = row + diagonal
+	    			if (difference > 0 && temp.hasOwnProperty(difference)){
+	    				isItCheckedAlready[i] = true
+	    				toCheckTrue = temp[difference]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    					var result = neighbour.addNeightbour(i,toCheckTrue[j],difference)
+	    					if(result == true){
+	    						// var selectedKeysString = "<div>"
+	    						// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+	    						// $("#selectedKeys").append("<br>");
+	    						// selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
+	    						// console.log("toCheck:"+toCheckTrue[j])
+	    						// console.log(arr[toCheckTrue[j]])
+	    						var toShow = arr[toCheckTrue[j]].getInfo();
+	    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+	    						// selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+	    						// $("#selectedKeys").append("<br>");
+	    						// $("#selectedKeys").append("difference : "+difference);
+	    						// selectedKeysString = selectedKeysString + "difference : "+difference+"</div>";
+	    						// $("#selectedKeys").append(selectedKeysString);
+	    					}
+	    				}
+
+	    			}
+	    			if (sum >0 && temp.hasOwnProperty(sum)){
+	    				toCheckTrue = temp[sum]
+	    				for(var j=0;j<toCheckTrue.length;j++){
+	    					isItCheckedAlready[toCheckTrue[j]] = true
+	    					var result = neighbour.addNeightbour(i,toCheckTrue[j],sum)
+	   						if(result == true){
+	   							// var selectedKeysString = "<div>"
+	    						// selectedKeysString = selectedKeysString + key+"-->"+row+" , "+diagonal+"<br>";
+	   							// $("#selectedKeys").append(key+"-->"+row+" , "+diagonal);
+	    						// $("#selectedKeys").append("<br>");
+	    						// console.log("toCheck:"+toCheckTrue[j])
+	    						// console.log(arr[toCheckTrue[j]])
+	    						var toShow = arr[toCheckTrue[j]].getInfo();
+	    						// $("#selectedKeys").append(key+"-->"+toShow[1]+" , "+toShow[0]);
+	    						// $("#selectedKeys").append("<br>");
+	    						// selectedKeysString = selectedKeysString + key+"-->"+toShow[1]+" , "+toShow[0]+"<br>";
+	    						// selectedKeysString = selectedKeysString + "sum : "+sum+"</div>";
+	    						// $("#selectedKeys").append(selectedKeysString);
+	    						
+	   						}
+	    				}
+	    			}
+	    			
+	    		}
+	    		var toprinthash = neighbour.returnNeighbour();
+	    		Nb = Nb + Object.keys(neighbour).length;
+	    		console.log(neighbour);
+	    		// console.log(key+"-> Nb"+Nb+" Nc"+Nc"
+	    	}else{
+	    		// not required variables
+	    	}
+	        
+	    }
+	}
+
+	console.log(lengthOfTheArray)
+	return [Nb,lengthOfTheArray-Nb]
+}
+
+function printAnswer(answer){
+
+	var prevN = 0;
+	var differenceArr = []
+
+	for(j=0;j<answer.length;j++){
+		var temp1 = []
+		// $("#element").append("<br>");
+		for(var m=0;m<prevN+1;m++){
+			temp1.push(" ")
+			// $("#element").append("-")
+			// $("#element").append("\t")
+		}
+		for(var i=prevN+1;i<answer.length;i++){
+			temp1.push(parseInt(answer[i])-parseInt(answer[prevN]))
+			// $("#element").append(parseInt(answer[i])-parseInt(answer[prevN]))
+			// $("#element").append("\t")
+		}
+		differenceArr.push(temp1)
+		prevN++;
+	}
+	var feasible = checkFeasibility(differenceArr);
+	// $("#element").append("<br>");
+	// $("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+	return feasible
+	
+}
+
+
+
+
+$("#submit-button").on("click",function(){
+	
+	var N = $("#NumberOfChannels").val();
+	if(N<10){
+		UIkit.notification({
+   			message: 'N should be greater than equal to 10',
+    		status: 'danger',
+    		pos: 'top-right',
+    		timeout: 3000
+		});
+
+	}else{
+		$("#inputElement").empty();
+		$("#element").empty();
+		$("#selectedKeys").empty();
+		$("#keys").empty();
+		$("#channel-submit-button").css("display","block");
+		string = "<div><label class='channelLabel'>";
+		string2 = ":</label><input class='uk-input uk-form-width-small channel'  type='number' placeholder='0'></div>";
+		for(var i=0;i < N;i++){
+			$("#inputElement").append(string+i+string2);
+		}
+	}
+});
+
+$("#channel-submit-button").on("click",function(){
+	var inputArray = [];
+	var check = true;
+	$(".channel").each(function(index,value){
+		if(this.value == ""){
+			UIkit.notification({
+   			message: index+'Input is empty',
+    		status: 'danger',
+    		pos: 'top-right',
+    		timeout: 3000
+    		
+		});
+			check = false
+		}else{
+			inputArray.push(parseInt(this.value));
+		}
+	});
+	if (check == true){
+		// console.log(array)
+		$("#element").empty();
+		$("#element").append("<br>");
+
+		function permute(permutation) {
+		  var length = permutation.length,
+		      result = [permutation.slice()],
+		      c = new Array(length).fill(0),
+		      i = 1, k, p;
+
+		  while (i < length) {
+		    if (c[i] < i) {
+		      k = i % 2 && c[i];
+		      p = permutation[i];
+		      permutation[i] = permutation[k];
+		      permutation[k] = p;
+		      ++c[i];
+		      i = 1;
+		      result.push(permutation.slice());
+		    } else {
+		      c[i] = 0;
+		      ++i;
+		    }
+		  }
+		  return result;
+		}
+		var numberOfDigitsToPermute = 6;
+		var arrayForPermuation = inputArray.slice(0,numberOfDigitsToPermute)
+		permutedResults = permute(arrayForPermuation);
+		var temp = printAnswer(permutedResults[0]);
+		var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
+		var finalResults= temp;
+		var finalArray=permutedResults[0];
+		for (var i =1;i<permutedResults.length;i++){
+			// $("#element").append("<br>")
+			// for(var j=0;j<permutedResults[0].length;j++){
+			// $("#element").append(permutedResults[i][j]+"\t")
+			// }
+			temp = printAnswer(permutedResults[i])
+			var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
+			if(tempSum < currentSum){
+				currentSum = tempSum;
+				finalArray = permutedResults[i];
+				finalResults = temp;
+			}
+
+		}
+		$("#element").append("<br>")
+		for(var j=0;j<finalArray.length;j++){
+			$("#element").append(finalArray[j]+"\t")
+		}
+		$("#element").append("<br>");
+		$("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
+
+		// for(var i=numberOfDigitsToPermute;i<inputArray.length;i++){
+		// 	finalArray.push(inputArray[i])
+		// }
+		// $("#element").append("<br>")
+		// for(var j=0;j<finalArray.length;j++){
+		// 	$("#element").append(finalArray[j]+"\t")
+		// }
+		// var finalResults = printAnswer(finalArray)
+		// $("#element").append("<br>");
+		// $("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
+		
+
+	}
+	
+});
+
+
+
+
+
+</script>
