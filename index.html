@@ -264,8 +264,8 @@ function printAnswer(answer){
 		prevN++;
 	}
 	var feasible = checkFeasibility(differenceArr);
-	// $("#element").append("<br>");
-	// $("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
+	$("#element").append("<br>");
+	$("#element").append("Nb = \t"+feasible[0]+"\tNc = \t"+feasible[1]+"\tNt = \t"+(parseInt(parseInt(3*feasible[0])+parseInt(2*feasible[1]))));
 	return feasible
 	
 }
@@ -345,12 +345,22 @@ $("#channel-submit-button").on("click",function(){
 		// var numberOfDigitsToPermute = 6;
 		// var arrayForPermuation = inputArray.slice(0,numberOfDigitsToPermute)
 		permutedResults = permute(inputArray);
+		
 		var temp = printAnswer(permutedResults[0]);
+		$("#element").append("<br>")
+			for(var j=0;j<permutedResults[0].length;j++){
+				$("#element").append(permutedResults[0][j]+"\t")
+		}
 		var currentSum = parseInt(3*temp[0])+parseInt(2*temp[1])
 		var finalResults= temp;
 		var finalArray=permutedResults[0];
+
 		for (var i =1;i<permutedResults.length;i++){
 			temp = printAnswer(permutedResults[i])
+			$("#element").append("<br>")
+			for(var j=0;j<permutedResults[0].length;j++){
+				$("#element").append(permutedResults[i][j]+"\t")
+			}
 			var tempSum = parseInt(3*temp[0])+parseInt(2*temp[1]);
 			if(tempSum < currentSum){
 				currentSum = tempSum;
@@ -360,16 +370,16 @@ $("#channel-submit-button").on("click",function(){
 
 		}
 		$("#element").append("<br>")
+		var backgroundString = "<div style='background-color:red'>";
 		for(var j=0;j<finalArray.length;j++){
-			$("#element").append(finalArray[j]+"\t")
+			backgroundString +=finalArray[j]+"\t";
 		}
-		$("#element").append("<br>");
-		$("#element").append("Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1]))));
+		backgroundString+="</div>";
+		$("#element").append(backgroundString)
+		$("#element").append("<div style='background-color:red'> Nb = \t"+finalResults[0]+"\tNc = \t"+finalResults[1]+"\tNt = \t"+(parseInt(parseInt(3*finalResults[0])+parseInt(2*finalResults[1])))+"</div>");
 
-	
+		}
 		
-
-	}
 	
 });
 
