@@ -106,12 +106,16 @@ function checkFeasibility(differenceArr){
 			neighbour = {}
 		}
 		addNeightbour(a,b,diff){
-			var nigga = Math.max(a,b)+","+Math.min(a,b)
-			if(neighbour.hasOwnProperty(nigga)){
-				return false;
+			if(diff > 0){
+				var nigga = Math.max(a,b)+","+Math.min(a,b)
+				if(neighbour.hasOwnProperty(nigga)){
+					return false;
+				}else{
+					neighbour[nigga] = diff;
+					return true;
+				}
 			}else{
-				neighbour[nigga] = diff;
-				return true;
+				return false
 			}
 		}	
 		returnNeighbour(){
@@ -344,8 +348,23 @@ $("#channel-submit-button").on("click",function(){
 		}
 		// var numberOfDigitsToPermute = 6;
 		// var arrayForPermuation = inputArray.slice(0,numberOfDigitsToPermute)
-		permutedResults = permute(inputArray);
-		
+
+		permutedResultsTemp = permute(inputArray);
+		permutedResults = new Array();
+		for (var itr = 0;itr<permutedResultsTemp.length;itr++){
+			var tempArray = new Array();
+			tempArray.push(0);
+			for (var jtr=0;jtr<permutedResultsTemp[0].length;jtr++){
+				if(jtr==0){
+					tempArray.push(permutedResultsTemp[itr][jtr]);
+				}else{
+					tempArray.push(tempArray[jtr]+permutedResultsTemp[itr][jtr]);
+				}
+				
+			}
+			permutedResults.push(tempArray)
+		}
+		console.log(permutedResults)
 		var temp = printAnswer(permutedResults[0]);
 		$("#element").append("<br>")
 			for(var j=0;j<permutedResults[0].length;j++){
